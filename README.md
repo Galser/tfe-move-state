@@ -248,6 +248,23 @@ We will create 1 folder, and then we will separate into 2 different projects.
     ( Came empty ) . E.g. there is no state to show. All went fine.
 
 
+# Notes
+Sometimes after moving local state out, into remote, you can get in the root `main.tf` sugc result with apply : 
+    ```bash
+    terraform apply
+    null_resource.helloWorld: Refreshing state... [id=3406884272144719649]
+    data.terraform_remote_state.random-pet: Refreshing state...
+
+    Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+
+    Outputs:
+
+    remote_demo = {}
+    ```
+E.g. the state recognized, it is remote, but somethng either cached locally or..so all outputs came empty. Not sure yet, but a little bit of waiting, cd to one directory, back, another `apply` solved problem by itself. It can be also a local MacOS problem. Will check later in a separate story. 
+
+
+
 # DONE
 - [x] initial code
 - [x] split code and move state
