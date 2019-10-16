@@ -169,7 +169,7 @@ We will create 1 folder, and then we will separate into 2 different projects.
                     "id": "proud-antelope",
                     "keepers": null,
         ```
-        OKay so far all looks good.
+        Okay. so far all looks good.
 - Update code to reference the remote state
   reference the state on random_pet 
   > Note: not sure this will work, lets try
@@ -209,7 +209,7 @@ We will create 1 folder, and then we will separate into 2 different projects.
 
     remote_demo = proud-antelope
     ```
-    As you can see indeed, state persist. nothign changed, created or adde, yet we go back, the very value for random_pet - **proud-antelope**
+    As you can see indeed, state persist. nothign changed, created or adde, yet we got back, the very same value for random_pet - **proud-antelope**
 - Terraform destroy should work and delete the existing state. Let's try to destroy state :
     ```bash
     $ terraform destroy
@@ -240,11 +240,12 @@ We will create 1 folder, and then we will separate into 2 different projects.
 
     Destroy complete! Resources: 1 destroyed.
     ```
+    Works as expected.
     Double-check : 
     ```
     terraform show
     ```
-    ( Came empty ) . E.g. there is no state to show.
+    ( Came empty ) . E.g. there is no state to show. All went fine.
 
 
 # DONE
