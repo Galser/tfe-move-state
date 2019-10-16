@@ -170,4 +170,85 @@ We will create 1 folder, and then we will separate into 2 different projects.
                     "keepers": null,
         ```
         OKay so far all looks good.
-        
+- Update code to reference the remote state
+  reference the state on random_pet 
+  > Note: not sure this will work, lets try
+  Editing [main.tf](main.tf) to make it look like :
+  ```terraform
+    data "terraform_remote_state" "random-pet" {
+        backend = "remote" 
+
+        config = {
+            organization = "galser-paid"
+            workspaces = {
+            name = "random-pet"
+            }      
+        }
+     }
+
+    resource "null_resource" "helloWorld" {
+        provisioner "local-exec" {
+            command = "echo hello world"
+        }
+    }
+
+    output "remote_demo" {
+       value = "${data.terraform_remote_state.random-pet.outputs.demo}"
+    }
+  ```
+
+- Terraform apply should say the nothing to be created, state should persists. Let's try terraform apply :
+    ```bash
+    terraform apply
+    null_resource.helloWorld: Refreshing state... [id=3406884272144719649]
+    data.terraform_remote_state.random-pet: Refreshing state...
+
+    Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+
+    Outputs:
+
+    remote_demo = proud-antelope
+    ```
+    As you can see indeed, state persist. nothign changed, created or adde, yet we go back, the very value for random_pet - **proud-antelope**
+- Terraform destroy should work and delete the existing state. Let's try to destroy state :
+    ```bash
+    $ terraform destroy
+    null_resource.helloWorld: Refreshing state... [id=3406884272144719649]
+    data.terraform_remote_state.random-pet: Refreshing state...
+
+    An execution plan has been generated and is shown below.
+    Resource actions are indicated with the following symbols:
+    - destroy
+
+    Terraform will perform the following actions:
+
+    # null_resource.helloWorld will be destroyed
+    - resource "null_resource" "helloWorld" {
+        - id = "3406884272144719649" -> null
+        }
+
+    Plan: 0 to add, 0 to change, 1 to destroy.
+
+    Do you really want to destroy all resources?
+    Terraform will destroy all your managed infrastructure, as shown above.
+    There is no undo. Only 'yes' will be accepted to confirm.
+
+    Enter a value: yes
+
+    null_resource.helloWorld: Destroying... [id=3406884272144719649]
+    null_resource.helloWorld: Destruction complete after 0s
+
+    Destroy complete! Resources: 1 destroyed.
+    ```
+    Double-check : 
+    ```
+    terraform show
+    ```
+    ( Came empty ) . E.g. there is no state to show.
+
+
+# DONE
+- [x] initial code
+- [x] split code and move state
+- [x] update code and try to reference remote state
+

@@ -1,11 +1,20 @@
-resource "null_resource" "helloWorld" {
-    provisioner "local-exec" {
-    command = "echo hello world"
-    }
+data "terraform_remote_state" "random-pet" {
+  backend = "remote" 
+
+  config = {
+    organization = "galser-paid"
+    workspaces = {
+      name = "random-pet"
+       }      
+  }
 }
 
-resource "random_pet" "demo" { }
+resource "null_resource" "helloWorld" {
+  provisioner "local-exec" {
+    command = "echo hello world"
+  }
+}
 
-output "demo" {
-    value = "${random_pet.demo.id}"
+output "remote_demo" {
+  value = "${data.terraform_remote_state.random-pet.outputs.demo}"
 }
